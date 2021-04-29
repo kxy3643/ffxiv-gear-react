@@ -1,0 +1,31 @@
+.App {
+  font-family: 'Noto Sans JP', sans-serif;
+  background-color: #3f3f3f;
+  display: flex;
+  flex-flow: column wrap;
+  align-items: center;
+}
+
+.App-header {
+  font-size:2em;
+  padding:1em;
+  text-align: center;
+}
+
+.App-main {
+  background-color:#3f3f3f;
+  color: rgb(219, 219, 219);
+}
+
+button {
+  align-self: center;
+}
+
+h1 {
+  filter: drop-shadow(3px 3px 3px #ddb444);
+}
+
+section {
+  text-align: center;
+  width: 30vw;
+}
