@@ -96,6 +96,7 @@ app.get('/getTopDPS', (req, res) => {
 app.get('/getToken', mid.requiresSecure, controllers.Account.getToken);
 app.post('/login', mid.requiresSecure, mid.requiresLogout, controllers.Account.login);
 app.post('/signup', mid.requiresSecure, mid.requiresLogout, controllers.Account.signup);
+app.post('/logout', mid.requiresSecure, mid.requiresLogin, controllers.Account.logout);
 
 
 app.get('*', (req, res) => {

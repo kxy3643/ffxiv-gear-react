@@ -1,9 +1,13 @@
 import React from 'react';
 import $ from "jquery";
 
-const loggedIn = (obj) => {
-  console.log(obj);
-  alert("im in");
+const loggedIn = (props, setNav, renderLoggedIn, name) => {
+  setNav(renderLoggedIn(props, name))
+  props.onLogin(true);
+  if(name === "ykc200" || name === "tony"){
+    console.log("welcome admin");
+    props.isAdmin(true);
+  }
 };
 
 const sendAjax = (type, action, data, success) => {
@@ -17,14 +21,15 @@ const sendAjax = (type, action, data, success) => {
   });
 };
 
-const handleLogin = (e) => {
+const handleLogin = (e, props, setNav, renderLoggedIn) => {
   e.preventDefault();
 
   if($("#user").val() === '' || $("#pass").val() === ''){
     return false;
   }
 
-  sendAjax('POST', $("#loginForm").attr("action"), $("#loginForm").serialize(), loggedIn);
+  sendAjax('POST', $("#loginForm").attr("action"), $("#loginForm").serialize(), 
+            loggedIn(props, setNav, renderLoggedIn, $("#user").val()));
 
   return false;
 };
@@ -48,11 +53,10 @@ const handleSignup = (e) => {
 
 function TopNav(props) {
   const renderLogin = (props) => {
-    console.log(props.csrf);
     return (
       <>
       <form id="loginForm" name="loginForm" style={{display:"inline"}}
-        onSubmit={handleLogin}
+        onSubmit={e => handleLogin(e, props, setNavHolder, renderLoggedIn)}
         action="/login"
         method="POST"
         className="mainForm" >
@@ -93,9 +97,22 @@ function TopNav(props) {
     );
   };
 
+
+  const renderLoggedIn = (props, name) => {
+    return (
+      <>
+      <p style={{display:"inline"}}>Hello, <i>{name}</i> | </p>
+      <p style={{display:"inline"}}> Or </p>
+      <a onClick={() => setNavHolder(renderLogin(props))} href="/logout">
+        Logout
+        </a>
+      </>
+    );
+  };
+
+
   const [navHolder, setNavHolder] = React.useState(renderLogin(props));
   
-
   return (
     <div className="topNav">
       {navHolder}
