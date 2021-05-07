@@ -13,7 +13,7 @@ function Ranking() {
     return (
         <div className="App">
         <header className="App-header">
-            <h1>FFXIV Raid Gear Distributor</h1>
+            <h1>FFXIV aDPS RANKING (EDEN'S PROMISE)</h1>
         </header>
 
         <main className="App-main">

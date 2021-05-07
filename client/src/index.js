@@ -3,7 +3,9 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import TopNav from './components/topNav';
-import TeamPage from './components/teamPage'
+import Team from './components/team';
+import Admin from './components/admin';
+import Search from './components/search';
 import $ from "jquery";
 
 const sendAjax = (type, action, data, success) => {
@@ -28,23 +30,23 @@ const Index = (props) => {
         adminStatus ? (
           //If logged in && admin
           <>
-            <TeamPage csrf={props.csrf} loggedIn = {true}/>
-            <TeamPage csrf={props.csrf} loggedIn = {true}/>
+            <Admin csrf={props.csrf} loggedIn = {true}/>
+            <Team csrf={props.csrf} loggedIn = {true}/>
           </>
           ) : (
           //If logged in
-          <TeamPage csrf={props.csrf} loggedIn = {true}/>
+          <Team csrf={props.csrf} loggedIn = {true}/>
         ): (
         //Else not logged in
-        <TeamPage csrf={props.csrf} loggedIn = {false}/>
+        <Team csrf={props.csrf} loggedIn = {false}/>
       )}
       {loginStatus ? (
         //If logged in
-        <TeamPage csrf={props.csrf} loggedIn = {true}/>
+        <Search csrf={props.csrf} loggedIn = {true}/>
       )
       : (
         //Else not logged in
-        <TeamPage csrf={props.csrf} loggedIn = {false}/>
+        <Search csrf={props.csrf} loggedIn = {false}/>
       )}
       <App />
     </React.StrictMode>

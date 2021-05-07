@@ -1,27 +1,31 @@
 import React from 'react';
 import $ from "jquery";
+import ErrorModal from "./modal"
 
 const loggedIn = (props, setNav, renderLoggedIn, name) => {
   setNav(renderLoggedIn(props, name))
   props.onLogin(true);
   if(name === "ykc200" || name === "tony"){
-    console.log("welcome admin");
     props.isAdmin(true);
   }
 };
 
-const sendAjax = (type, action, data, success) => {
+const sendAjax = (type, action, data, success, setModal) => {
   $.ajax({
-      cache: false,
-      type: type,
-      url: action,
-      data: data,
-      dataType: "json",
-      success: success
+    cache: false,
+    type: type,
+    url: action,
+    data: data,
+    dataType: "json",
+    success: function(){success()},
+    error: function(xhr, status, error){
+      let messageObj = JSON.parse(xhr.responseText);
+      setModal(<ErrorModal message={messageObj.error} onClose={setModal}/>);
+    }
   });
 };
 
-const handleLogin = (e, props, setNav, renderLoggedIn) => {
+const handleLogin = (e, props, setNav, renderLoggedIn, setModal) => {
   e.preventDefault();
 
   if($("#user").val() === '' || $("#pass").val() === ''){
@@ -29,12 +33,12 @@ const handleLogin = (e, props, setNav, renderLoggedIn) => {
   }
 
   sendAjax('POST', $("#loginForm").attr("action"), $("#loginForm").serialize(), 
-            loggedIn(props, setNav, renderLoggedIn, $("#user").val()));
+            () => {loggedIn(props, setNav, renderLoggedIn, $("#user").val())}, setModal);
 
   return false;
 };
 
-const handleSignup = (e) => {
+const handleSignup = (e, props, setNav, renderLoggedIn, setModal) => {
   e.preventDefault();
 
   if($("#user").val() === '' || $("#pass").val() === '' || $("#pass2").val() === ''){
@@ -45,7 +49,8 @@ const handleSignup = (e) => {
       return false;
   }
 
-  sendAjax('POST', $("#signupForm").attr("action"), $("#signupForm").serialize(), loggedIn);
+  sendAjax('POST', $("#signupForm").attr("action"), $("#signupForm").serialize(), 
+            () => {loggedIn(props, setNav, renderLoggedIn, $("#user").val())}, setModal);
 
   return false;
 };
@@ -56,7 +61,7 @@ function TopNav(props) {
     return (
       <>
       <form id="loginForm" name="loginForm" style={{display:"inline"}}
-        onSubmit={e => handleLogin(e, props, setNavHolder, renderLoggedIn)}
+        onSubmit={e => handleLogin(e, props, setNavHolder, renderLoggedIn, setModal)}
         action="/login"
         method="POST"
         className="mainForm" >
@@ -77,17 +82,17 @@ function TopNav(props) {
     return (
       <>
       <form id="signupForm" name="signupForm" style={{display:"inline"}}
-        onSubmit={handleSignup}
+        onSubmit={e => handleSignup(e, props, setNavHolder, renderLoggedIn, setModal)}
         action="/signup"
         method="POST"
         className="mainForm"
         >
         <label htmlFor="username">Username:</label>
-        <input id="user" type="text" name="username" placeholder="username"/>
+        <input id="user" type="text" name="username" placeholder="username" />
         <label htmlFor="pass">Password:</label>
-        <input id="pass" type="password" name="pass" placeholder="password"/>
+        <input id="pass" type="password" name="pass" placeholder="password" />
         <label htmlFor="pass2">Password:</label>
-        <input id="pass2" type="password" name="pass2" placeholder="retype password"/>
+        <input id="pass2" type="password" name="pass2" placeholder="retype password" />
         <input type="hidden" name="_csrf" value={props.csrf} />
         <input className="formSubmit" type="submit" value="Sign up"/>
       </form>
@@ -96,7 +101,6 @@ function TopNav(props) {
       </>
     );
   };
-
 
   const renderLoggedIn = (props, name) => {
     return (
@@ -110,12 +114,13 @@ function TopNav(props) {
     );
   };
 
-
   const [navHolder, setNavHolder] = React.useState(renderLogin(props));
+  const [modal, setModal] = React.useState(null);
   
   return (
     <div className="topNav">
       {navHolder}
+      {modal}
     </div>
   );
 }

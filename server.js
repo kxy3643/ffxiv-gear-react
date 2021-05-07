@@ -43,19 +43,6 @@ const redisClient = redis.createClient({
     password: redisPASS,
 });
 
-app.use(session({
-    key: 'sessionid',
-    store: new RedisStore({
-    client: redisClient,
-    }),
-    secret: 'Monday2Chest',
-    resave: true,
-    saveUninitialized: true,
-    cookie: {
-        httpOnly: true,
-    },
-}));
-
 mongoose.connect(dbURL, mongooseOptions, (err) => {
     if (err) {
         console.log('Could not connect to database');
@@ -71,6 +58,19 @@ app.use(bodyParser.urlencoded({
     extended: true,
 }));
 
+app.use(session({
+    key: 'sessionid',
+    store: new RedisStore({
+    client: redisClient,
+    }),
+    secret: 'Monday2Chest',
+    resave: true,
+    saveUninitialized: true,
+    cookie: {
+        httpOnly: true,
+    },
+}));
+
 //CSRF goes after Parsers
 app.use(csrf());
 app.use((err, req, res, next) => {
@@ -79,7 +79,6 @@ app.use((err, req, res, next) => {
     console.log('Missing CSRF token');
     return false;
 });
-
 
 
 app.get('/getTopDPS', (req, res) => {
@@ -96,10 +95,11 @@ app.get('/getTopDPS', (req, res) => {
 app.get('/getToken', mid.requiresSecure, controllers.Account.getToken);
 app.post('/login', mid.requiresSecure, mid.requiresLogout, controllers.Account.login);
 app.post('/signup', mid.requiresSecure, mid.requiresLogout, controllers.Account.signup);
-app.post('/logout', mid.requiresSecure, mid.requiresLogin, controllers.Account.logout);
+app.get('/logout', mid.requiresSecure, mid.requiresLogin, controllers.Account.logout);
 
 
-app.get('*', (req, res) => {
+
+app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname+'/client/build/index.html'));
 });
 
