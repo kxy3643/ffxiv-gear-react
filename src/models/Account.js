@@ -32,7 +32,7 @@ const AccountSchema = new mongoose.Schema({
 
 AccountSchema.statics.toAPI = (doc) => ({
   username: doc.username,
-  id: doc.id,
+  _id: doc._id,
 });
 
 const validatePassword = (doc, password, callback) => {
