@@ -29,6 +29,7 @@ const handleLogin = (e, props, setNav, renderLoggedIn, setModal) => {
   e.preventDefault();
 
   if($("#user").val() === '' || $("#pass").val() === ''){
+    setModal(<ErrorModal message={"All fields are required!"} onClose={setModal}/>);
     return false;
   }
 
@@ -42,11 +43,13 @@ const handleSignup = (e, props, setNav, renderLoggedIn, setModal) => {
   e.preventDefault();
 
   if($("#user").val() === '' || $("#pass").val() === '' || $("#pass2").val() === ''){
-      return false;
+    setModal(<ErrorModal message={"All fields are required!"} onClose={setModal}/>);
+    return false;
   }
 
   if($("#pass").val() !== $("#pass2").val()){
-      return false;
+    setModal(<ErrorModal message={"Passwords must be the same!"} onClose={setModal}/>);
+    return false;
   }
 
   sendAjax('POST', $("#signupForm").attr("action"), $("#signupForm").serialize(), 

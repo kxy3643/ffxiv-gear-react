@@ -36,7 +36,7 @@ function ErrorModal(props) {
     
     const handleClose = () => {
         setOpen(false);
-        
+        props.onClose(null);
     }
     const [open, setOpen] = React.useState(true);
 
