@@ -108,7 +108,38 @@ const deleteTeam = (request, response) => {
     return true;
 }
 
+const getAllTeams = (request, response) => {
+    const req = request;
+    const res = response;
+
+    if(req.session.account === undefined){
+        return res.status(403).json({ error: 'Please login first!' });
+    }
+
+
+    if(req.session.account.username === 'ykc200' 
+    || req.session.account.username === 'tony'){
+        Team.TeamModel.findAll().then((data) => {
+            if(data.length === 0){
+                return res.status(302).json({ teams: [] });
+            }
+            else{
+                const responseJSON = {
+                    teams: data
+                }
+                return res.status(302).json(responseJSON);
+            }
+        });
+    }else{
+        
+        return res.status(401).json({ error: 'You do not access to this list!' });
+    }
+
+    return true;
+}
+
 
 module.exports.addTeam = addTeam;
 module.exports.getTeam = getTeam;
 module.exports.deleteTeam = deleteTeam;
+module.exports.getAllTeams = getAllTeams;

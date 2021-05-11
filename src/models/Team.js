@@ -120,6 +120,12 @@ TeamSchema.statics.deleteByName = (name) => {
   return TeamModel.deleteOne(search);
 }
 
+TeamSchema.statics.findAll = () => {
+
+  return TeamModel.find().select('name contact t1 t2 h1 h2 d1 d2 d3 d4'
+  ).lean();
+};
+
 TeamModel = mongoose.model('Team', TeamSchema);
 
 module.exports.TeamModel = TeamModel;

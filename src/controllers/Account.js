@@ -2,7 +2,10 @@ const models = require('../models');
 
 const { Account } = models;
 
-const logout = (req, res) => {
+const logout = (request, response) => {
+  const req = request;
+  const res = response;
+
   req.session.destroy();
   res.redirect('/');
 };
