@@ -110,7 +110,10 @@ function TopNav(props) {
       <>
       <p style={{display:"inline"}}>Hello, <i>{name}</i> | </p>
       <p style={{display:"inline"}}>  </p>
-      <a onClick={() => setNavHolder(renderLogin(props))} href="/logout">
+      <a onClick={() => {
+          setNavHolder(renderLogin(props));
+          props.onLogin(false);
+        }} href="/logout">
         Logout
         </a>
       </>

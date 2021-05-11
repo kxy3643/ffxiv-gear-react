@@ -50,13 +50,65 @@ const addTeam = (request, response) => {
 }
 
 
-const findTeam = (request, response) => {
+const getTeam = (request, response) => {
+    const req = request;
+    const res = response;
+
+    if(req.session.account === undefined){
+        return res.status(403).json({ error: 'Please login first!' });
+    }
+    
+    Team.TeamModel.findByOwner(req.session.account._id).then((data)=>{
+        if(data.length === 0){
+            return res.status(302).json({ teams: [] });
+        }
+        else{
+            const responseJSON = {
+                teams: data
+            }
+            return res.status(302).json(responseJSON);
+        }
+    });
+
+    return true;
+}
+
+const deleteTeam = (request, response) => {
     const req = request;
     const res = response;
     const body = req.body;
 
 
+    if(req.session.account === undefined){
+        return res.status(403).json({ error: 'Please login first!' });
+    }
+
+
+    Team.TeamModel.findByName(body.name).then((data)=>{
+        if(data.length === 0){
+            return res.status(400).json({ error: 'Team does not exist!' });
+        }
+        else{
+            if(toString(data[0].owner) !== toString(req.session.account._id)){
+                return res.status(401).json({ error: 'This is not your team!' });
+            }
+            else{
+                Team.TeamModel.deleteByName(body.name).then((data) => {
+                    if(data.deletedCount === 1){
+                        return res.status(302).json({error: 'Team deleted'});
+                    }
+                    else{
+                        return res.status(404).json({error: 'Team not found'});
+                    }
+                });
+            }
+        }
+    });
+
+    return true;
 }
 
 
 module.exports.addTeam = addTeam;
+module.exports.getTeam = getTeam;
+module.exports.deleteTeam = deleteTeam;

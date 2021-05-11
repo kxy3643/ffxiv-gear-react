@@ -97,7 +97,8 @@ app.post('/login', mid.requiresSecure, controllers.Account.login);
 app.post('/signup', mid.requiresSecure, controllers.Account.signup);
 app.get('/logout', mid.requiresSecure, controllers.Account.logout);
 app.post('/makeTeam', mid.requiresSecure, controllers.Team.addTeam);
-
+app.get('/getMyTeams', mid.requiresSecure, controllers.Team.getTeam);
+app.post('/deleteTeam', mid.requiresSecure, controllers.Team.deleteTeam);
 
 
 app.get('/', (req, res) => {

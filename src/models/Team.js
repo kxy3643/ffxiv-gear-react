@@ -87,22 +87,21 @@ TeamSchema.statics.toAPI = (doc) => ({
   d4: doc.d4,
 });
 
-TeamSchema.statics.findByOwner = (ownerId, callback) => {
+TeamSchema.statics.findByOwner = (ownerId) => {
   const search = {
     owner: convertId(ownerId),
   };
 
-  return TeamModel.find(search).select('name t1 t2 h1 h2 d1 d2 d3 d4'
-  ).lean().exec(callback);
+  return TeamModel.find(search).select('name contact t1 t2 h1 h2 d1 d2 d3 d4'
+  ).lean();
 };
 
-TeamSchema.statics.findByName = (name, callback) => {
+TeamSchema.statics.findByName = (name) => {
   const search = {
     name,
   };
 
-  return TeamModel.find(search).select('name t1 t2 h1 h2 d1 d2 d3 d4'
-  ).lean();
+  return TeamModel.find(search).select('name owner').lean();
 };
 
 TeamSchema.statics.updateByName = (name, newValues, callback) => {
@@ -112,6 +111,14 @@ TeamSchema.statics.updateByName = (name, newValues, callback) => {
 
   return TeamModel.updateOne(search, newValues, callback);
 };
+
+TeamSchema.statics.deleteByName = (name) => {
+  const search = {
+    name,
+  };
+
+  return TeamModel.deleteOne(search);
+}
 
 TeamModel = mongoose.model('Team', TeamSchema);
 

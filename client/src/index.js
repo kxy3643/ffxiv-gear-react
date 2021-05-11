@@ -22,6 +22,7 @@ const sendAjax = (type, action, data, success) => {
 const Index = (props) => {
   const [loginStatus, setLoginStatus] = React.useState(false);
   const [adminStatus, setAdminStatus] = React.useState(false);
+  const [updateStatus, setUpdateStatus] = React.useState(0);
 
   return (
     <React.StrictMode>
@@ -31,11 +32,11 @@ const Index = (props) => {
           //If logged in && admin
           <>
             <Admin csrf={props.csrf} loggedIn = {true}/>
-            <Team csrf={props.csrf} loggedIn = {true}/>
+            <Team csrf={props.csrf} updateStatus={updateStatus} onUpdate={setUpdateStatus} loggedIn = {true}/>
           </>
           ) : (
           //If logged in
-          <Team csrf={props.csrf} loggedIn = {true}/>
+          <Team csrf={props.csrf} updateStatus={updateStatus} onUpdate={setUpdateStatus} loggedIn = {true}/>
         ): (
         //Else not logged in
         <Team csrf={props.csrf} loggedIn = {false}/>
