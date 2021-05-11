@@ -16,6 +16,13 @@ const TeamSchema = new mongoose.Schema({
     set: setName,
   },
 
+  contact: {
+    type: String,
+    required: true,
+    trim: true,
+    set: setName,
+  },
+
   t1: {
     type: Number,
     required: true,

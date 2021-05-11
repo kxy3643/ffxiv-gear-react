@@ -1,6 +1,6 @@
 import React from 'react';
 import $ from "jquery";
-import ErrorModal from "./modal"
+import MyModal from "./modal"
 
 const loggedIn = (props, setNav, renderLoggedIn, name) => {
   setNav(renderLoggedIn(props, name))
@@ -20,7 +20,7 @@ const sendAjax = (type, action, data, success, setModal) => {
     success: function(){success()},
     error: function(xhr, status, error){
       let messageObj = JSON.parse(xhr.responseText);
-      setModal(<ErrorModal message={messageObj.error} onClose={setModal}/>);
+      setModal(<MyModal title={"Error"} message={messageObj.error} onClose={setModal}/>);
     }
   });
 };
@@ -29,7 +29,7 @@ const handleLogin = (e, props, setNav, renderLoggedIn, setModal) => {
   e.preventDefault();
 
   if($("#user").val() === '' || $("#pass").val() === ''){
-    setModal(<ErrorModal message={"All fields are required!"} onClose={setModal}/>);
+    setModal(<MyModal title={"Error"} message={"All fields are required!"} onClose={setModal}/>);
     return false;
   }
 
@@ -43,12 +43,12 @@ const handleSignup = (e, props, setNav, renderLoggedIn, setModal) => {
   e.preventDefault();
 
   if($("#user").val() === '' || $("#pass").val() === '' || $("#pass2").val() === ''){
-    setModal(<ErrorModal message={"All fields are required!"} onClose={setModal}/>);
+    setModal(<MyModal title={"Error"} message={"All fields are required!"} onClose={setModal}/>);
     return false;
   }
 
   if($("#pass").val() !== $("#pass2").val()){
-    setModal(<ErrorModal message={"Passwords must be the same!"} onClose={setModal}/>);
+    setModal(<MyModal title={"Error"} message={"Passwords must be the same!"} onClose={setModal}/>);
     return false;
   }
 
@@ -109,7 +109,7 @@ function TopNav(props) {
     return (
       <>
       <p style={{display:"inline"}}>Hello, <i>{name}</i> | </p>
-      <p style={{display:"inline"}}> Or </p>
+      <p style={{display:"inline"}}>  </p>
       <a onClick={() => setNavHolder(renderLogin(props))} href="/logout">
         Logout
         </a>

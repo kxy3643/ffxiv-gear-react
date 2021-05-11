@@ -96,6 +96,7 @@ app.get('/getToken', mid.requiresSecure, controllers.Account.getToken);
 app.post('/login', mid.requiresSecure, controllers.Account.login);
 app.post('/signup', mid.requiresSecure, controllers.Account.signup);
 app.get('/logout', mid.requiresSecure, controllers.Account.logout);
+app.post('/makeTeam', mid.requiresSecure, controllers.Team.addTeam);
 
 
 

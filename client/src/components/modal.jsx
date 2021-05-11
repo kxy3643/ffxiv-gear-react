@@ -21,13 +21,13 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-function ErrorModal(props) {
+function MyModal(props) {
     const classes = useStyles();
     const [modalStyle] = React.useState(getModalStyle);
 
     let body = (
         <div style={modalStyle} className={classes.paper}>
-          <h2 id="simple-modal-title">Error!</h2>
+          <h2 id="simple-modal-title">{props.title}</h2>
           <p id="simple-modal-description">
             {props.message}
           </p>
@@ -53,4 +53,4 @@ function ErrorModal(props) {
 }
 
 
-export default ErrorModal;
+export default MyModal;
