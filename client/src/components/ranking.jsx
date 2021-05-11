@@ -11,12 +11,12 @@ function Ranking() {
 
 
     return (
-        <div className="App">
-        <header className="App-header">
+        <div className="App" id="Ranking">
+        <div className="App-header">
             <h1>FFXIV aDPS RANKING (EDEN'S PROMISE)</h1>
-        </header>
+        </div>
 
-        <main className="App-main">
+        <div className="App-main">
             <button onClick={getRanking}>Show Ranking</button>
             {rankingList && (
                 rankingList.message === 'FFlogs API Error'
@@ -26,13 +26,14 @@ function Ranking() {
                         <span key={index}>
                         <p><b>{rankingIndex.name}</b></p>
                         <p>{rankingIndex.dps}</p>
-                        <hr></hr>
+                        <hr />
                         </span>
                     ))}
                 </section>
             )}
-      </main>
-    </div>
+        </div>
+        <hr className="breakHR" />
+        </div>
   );
 }
 

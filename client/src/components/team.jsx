@@ -2,10 +2,6 @@ import React from 'react';
 import $ from "jquery";
 import MyModal from "./modal"
 
-const submitted = (props) => {
-
-}
-
 const sendAjax = (type, action, data, success, setModal) => {
     $.ajax({
       cache: false,
@@ -13,7 +9,7 @@ const sendAjax = (type, action, data, success, setModal) => {
       url: action,
       data: data,
       dataType: "json",
-      success: function(){success()},
+      success: success,
       error: function(xhr, status, error){
         let messageObj = JSON.parse(xhr.responseText);
         setModal(<MyModal title={"Error"} message={messageObj.error} onClose={setModal}/>);
@@ -30,7 +26,10 @@ const handleMakeTeam = (e, props, setModal) => {
     }
 
     sendAjax('POST', $("#teamMakerForm").attr("action"), $("#teamMakerForm").serialize(), 
-            () => {submitted(props)}, setModal);
+            () => {
+                setModal(<MyModal title={"Success"} message={"Team has been submitted"} onClose={setModal}/>);
+            }, setModal
+    );
 
     return false;
 }
@@ -126,10 +125,13 @@ function TeamPage(props) {
     
     if(props.loggedIn){
         return (
-            <div className="TeamPage">
-                <h1>Team</h1>
+            <div className="App" id="TeamPage">
+                <div className="App-header">
+                    <h1>Submit a team</h1>
+                </div>
                 {renderMaker(props)}
                 {modal}
+                <hr className="breakHR" />
             </div>
             );
     }else{

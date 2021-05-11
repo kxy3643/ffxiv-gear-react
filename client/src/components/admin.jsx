@@ -12,17 +12,18 @@ function AdminPage(props) {
 
     if(props.loggedIn){
         return (
-           <div className="TeamPage">
-                <header className="App-header">
+            <div className="App" id="AdminPage">
+                <div className="App-header">
                     <h1>Admin</h1>
-                </header>
+                </div>
         
-                <main className="App-main">
+                <div className="App-main">
                     
-                </main>
+                </div>
+                <hr className="breakHR" />
             </div>);
     }else{
-        return (<div className="TeamPage" />);
+        return (<div className="App" id="AdminPage" />);
     }
 }
 

@@ -11,6 +11,9 @@
   text-align: center;
 }
 
+.breakHR {
+  width: 80vw;
+}
 
 button {
   align-self: center;
