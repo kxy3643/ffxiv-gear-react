@@ -7,8 +7,6 @@ const addTeam = (request, response) => {
     const res = response;
     const body = req.body;
 
-    console.log(body);
-
     if (!body.name || !body.contact) {
         return res.status(400).json({ error: 'All fields are required' });
     }
@@ -27,13 +25,37 @@ const addTeam = (request, response) => {
         owner: req.session.account._id,
     }
 
-    Team.TeamModel.findByName(body.name, (data) => {
-        if(!data) return res.status(400).json({ error: 'Team name has been taken!' });
-    })
+    Team.TeamModel.findByName(body.name).then((data)=>{
+        if(data[0] !== undefined){
+            return res.status(400).json({ error: 'Team name has been taken!' });
+        }
+        else{
+            const newTeam = new Team.TeamModel(teamInfo);
 
-    const newTeam = new Team.TeamModel(teamInfo);
+            const teamPromise = newTeam.save();
+        
+            teamPromise.catch((err) => {
+                if (err.code === 11000) {
+                  return res.status(400).json({ error: 'Team already existes' });
+                }
+        
+                return res.status(400).json({ error: 'An error occurred' });
+            });
 
-    //const teamPromise = newTeam.save();
+            return res.status(201).json({message: 'Team created'});
+        }
+    });
+
+    return true;
+}
+
+
+const findTeam = (request, response) => {
+    const req = request;
+    const res = response;
+    const body = req.body;
+
+
 }
 
 

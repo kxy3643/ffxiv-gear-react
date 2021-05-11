@@ -101,7 +101,8 @@ TeamSchema.statics.findByName = (name, callback) => {
     name,
   };
 
-  return TeamModel.findOne(search, callback);
+  return TeamModel.find(search).select('name t1 t2 h1 h2 d1 d2 d3 d4'
+  ).lean();
 };
 
 TeamSchema.statics.updateByName = (name, newValues, callback) => {
