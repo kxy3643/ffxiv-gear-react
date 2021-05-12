@@ -2,6 +2,7 @@ import React from 'react';
 import $ from "jquery";
 import MyModal from "./modal"
 
+//change view to logged in
 const loggedIn = (props, setNav, renderLoggedIn, name) => {
   setNav(renderLoggedIn(props, name))
   props.onLogin(true);
@@ -13,6 +14,7 @@ const loggedIn = (props, setNav, renderLoggedIn, name) => {
   }
 };
 
+//ajax helper
 const sendAjax = (type, action, data, success, setModal) => {
   $.ajax({
     cache: false,
@@ -28,6 +30,7 @@ const sendAjax = (type, action, data, success, setModal) => {
   });
 };
 
+//login helper
 const handleLogin = (e, props, setNav, renderLoggedIn, setModal) => {
   e.preventDefault();
   
@@ -42,6 +45,7 @@ const handleLogin = (e, props, setNav, renderLoggedIn, setModal) => {
   return false;
 };
 
+//signup helper
 const handleSignup = (e, props, setNav, renderLoggedIn, setModal) => {
   e.preventDefault();
   
@@ -61,6 +65,7 @@ const handleSignup = (e, props, setNav, renderLoggedIn, setModal) => {
   return false;
 };
 
+//password change helper
 const handleChange = (e, props, setNav, renderLoggedIn, setModal, name) => {
   e.preventDefault();
   
@@ -86,8 +91,9 @@ const handleChange = (e, props, setNav, renderLoggedIn, setModal, name) => {
   }, setModal);
 }
 
-
+//component
 function TopNav(props) {
+  //render login
   const renderLogin = (props) => {
     return (
       <>
@@ -108,7 +114,8 @@ function TopNav(props) {
       </>
     )
   };
-    
+
+  //render signup
   const renderSignup = (props) => {
     return (
       <>
@@ -132,7 +139,8 @@ function TopNav(props) {
       </>
     );
   };
-      
+  
+  //render logged in view
   const renderLoggedIn = (props, name) => {
     return (
       <>
@@ -151,7 +159,8 @@ function TopNav(props) {
       </>
     );
   };
-        
+  
+  //render password change view
   const renderPasswordChange = (props, name) => {
     return (
       <>
@@ -180,6 +189,7 @@ function TopNav(props) {
   const [navHolder, setNavHolder] = React.useState(renderLogin(props));
   const [modal, setModal] = React.useState(null);
   
+  //render
   return (
     <div className="topNav">
     {navHolder}

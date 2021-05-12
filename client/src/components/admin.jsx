@@ -2,6 +2,7 @@ import React from 'react';
 import $ from "jquery";
 import MyModal from "./modal"
 
+//ajax helper
 const sendAjax = (type, action, data, success, setModal) => {
   $.ajax({
     cache: false,
@@ -17,6 +18,7 @@ const sendAjax = (type, action, data, success, setModal) => {
   });
 };
 
+//delete team helper
 const handleDeleteTeam = (e, props, setModal, getAdmin, index) => {
   e.preventDefault();
   
@@ -32,10 +34,12 @@ const handleDeleteTeam = (e, props, setModal, getAdmin, index) => {
   return false;
 }
 
+//page component
 function AdminPage(props) {
   const [modal, setModal] = React.useState(null);
   const [adminList, setAdminList] = React.useState(null);
   
+  //update
   const getAdmin = () => {
     fetch('/getAdmin')
     .then(result => result.json())
@@ -43,11 +47,13 @@ function AdminPage(props) {
     .catch(error => console.log(error));
   };
   
+  //force updating state
   const forceUpdate = () => {
     getAdmin();
     props.onUpdate(props.updateStatus + 1);
   };
   
+  //render
   const renderAllTeams = (props) => {
     return (
       <div id="allTeams">
@@ -79,7 +85,8 @@ function AdminPage(props) {
       </div>
     );    
   }
-        
+  
+  //auto update after action in component
   React.useEffect(() => {
     getAdmin();
     if(props.loggedIn){
@@ -100,7 +107,7 @@ function AdminPage(props) {
     }
   }, [props.loggedIn ,props.updateStatus]);
           
-          
+  //default return  
   if(props.loggedIn){
     return (
       <div className="App" id="AdminPage">

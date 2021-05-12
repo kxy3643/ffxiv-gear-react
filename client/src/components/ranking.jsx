@@ -2,6 +2,8 @@ import React from 'react';
 
 function Ranking() {
   const [rankingList, setRankingList] = React.useState(null);
+
+  //update ranking
   const getRanking = () => {
     fetch('/getTopDPS')
     .then(result => result.json())
@@ -9,7 +11,7 @@ function Ranking() {
     .catch(error => console.log(error));
   };
   
-  
+  //render
   return (
     <div className="App" id="Ranking">
       <div className="App-header">

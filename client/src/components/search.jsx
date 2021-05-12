@@ -3,6 +3,8 @@ import $ from "jquery";
 
 function Search(props) {
   const [resultList, setResultList] = React.useState(null);
+
+  //update
   const getResult = (cSearch) => {
     fetch(`/search?class=${cSearch}`)
     .then(result => result.json())
@@ -10,6 +12,7 @@ function Search(props) {
     .catch(error => console.log(error));
   };
 
+  //search helper
   const handleSearch = () => {
     getResult($("#myClassSelect").val());
   };
@@ -17,6 +20,7 @@ function Search(props) {
   const cAbbr = ['N/A','AST','BRD','BLM','DRK','DRG','MCN','MNK','NIN',
   'PLD','SCH','SMN','WAR','WHM','RDM','SAM','DNC','GNB','Recruiting'];
 
+  //render
   if(props.loggedIn){
     return (
       <div className="App" id="SearchPage">

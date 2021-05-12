@@ -2,6 +2,9 @@ const _ = require('underscore');
 const axios = require('axios').default;
 require('dotenv').config();
 
+//XIV TopDPS API - by ykc200
+
+//hit fflogs api for that encounter
 const downloadDps = async (_encId, _spec) => {
   const baseUrl = 'https://www.fflogs.com:443/v1/rankings/encounter/';
   const apiKey = process.env.LOGSAPI;
@@ -14,6 +17,7 @@ const downloadDps = async (_encId, _spec) => {
     .catch(() => null);
 };
 
+//calc avg dps for class
 const getTopClassDps = async (_spec = 3) => {
   let avgDps = 0;
   const queue = []; // Array of promises
@@ -35,6 +39,7 @@ const getTopClassDps = async (_spec = 3) => {
   return avgDps;
 };
 
+//return final data
 const getRanking = async () => {
   let ranking = [];
   const queue = [];
@@ -52,6 +57,7 @@ const getRanking = async () => {
       dps: data[i].toFixed(1),
     };
 
+    //using full name
     switch ((i + 1)) {
       case 1: ranking[i].name = 'Astrologian'; break;
       case 2: ranking[i].name = 'Bard'; break;

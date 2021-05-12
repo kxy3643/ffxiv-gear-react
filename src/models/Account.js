@@ -30,11 +30,13 @@ const AccountSchema = new mongoose.Schema({
   },
 });
 
+//session
 AccountSchema.statics.toAPI = (doc) => ({
   username: doc.username,
   _id: doc._id,
 });
 
+//validate pass
 const validatePassword = (doc, password, callback) => {
   const pass = doc.password;
 
@@ -46,6 +48,7 @@ const validatePassword = (doc, password, callback) => {
   });
 };
 
+//find account by username
 AccountSchema.statics.findByUsername = (name, callback) => {
   const search = {
     username: name,
@@ -54,6 +57,7 @@ AccountSchema.statics.findByUsername = (name, callback) => {
   return AccountModel.findOne(search, callback);
 };
 
+//update account by username
 AccountSchema.statics.updateByUsername = (name, newValues, callback) => {
   const search = {
     username: name,
@@ -62,12 +66,14 @@ AccountSchema.statics.updateByUsername = (name, newValues, callback) => {
   return AccountModel.updateOne(search, newValues, callback);
 };
 
+//encrypt
 AccountSchema.statics.generateHash = (password, callback) => {
   const salt = crypto.randomBytes(saltLength);
 
   crypto.pbkdf2(password, salt, iterations, keyLength, 'RSA-SHA512', (err, hash) => callback(salt, hash.toString('hex')));
 };
 
+//authenticate
 AccountSchema.statics.authenticate = (username, password, callback) => {
   AccountModel.findByUsername(username, (err, doc) => {
     if (err) {

@@ -8,6 +8,7 @@ import Admin from './components/admin';
 import Search from './components/search';
 import $ from "jquery";
 
+//ajax helper
 const sendAjax = (type, action, data, success) => {
   $.ajax({
       cache: false,
@@ -19,6 +20,7 @@ const sendAjax = (type, action, data, success) => {
   });
 };
 
+//index page
 const Index = (props) => {
   const [loginStatus, setLoginStatus] = React.useState(false);
   const [adminStatus, setAdminStatus] = React.useState(false);
@@ -54,6 +56,7 @@ const Index = (props) => {
   );
 }
 
+//get csrf
 $(document).ready(function() {
   sendAjax('GET', '/getToken', null, (result) => {
 

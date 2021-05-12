@@ -2,6 +2,8 @@ const models = require('../models');
 
 const { Account } = models;
 
+//Logout + login + sign up was taken from domomaker
+//Logout
 const logout = (request, response) => {
   const req = request;
   const res = response;
@@ -10,6 +12,7 @@ const logout = (request, response) => {
   res.redirect('/');
 };
 
+//Login
 const login = (request, response) => {
   const req = request;
   const res = response;
@@ -17,10 +20,12 @@ const login = (request, response) => {
   const username = `${req.body.username}`;
   const password = `${req.body.pass}`;
 
+  //error checking
   if (!username || !password) {
     return res.status(400).json({ error: 'All fields are required' });
   }
 
+  //authenticate
   return Account.AccountModel.authenticate(username, password, (err, account) => {
     if (err || !account) {
       return res.status(401).json({ error: 'Wrong username or password' });
@@ -32,6 +37,7 @@ const login = (request, response) => {
   });
 };
 
+//Sign up
 const signup = (request, response) => {
   const req = request;
   const res = response;
@@ -40,6 +46,7 @@ const signup = (request, response) => {
   req.body.pass = `${req.body.pass}`;
   req.body.pass2 = `${req.body.pass2}`;
 
+  //error checking
   if (!req.body.username || !req.body.pass || !req.body.pass2) {
     return res.status(400).json({ error: 'All fields are required' });
   }
@@ -48,6 +55,7 @@ const signup = (request, response) => {
     return res.status(400).json({ error: 'Passwords do not match' });
   }
 
+  //encrypt and store
   return Account.AccountModel.generateHash(req.body.pass, (salt, hash) => {
     const accountData = {
       username: req.body.username,
@@ -76,6 +84,7 @@ const signup = (request, response) => {
   });
 };
 
+//Change password
 const changePassword = (request, response) => {
   const req = request;
   const res = response;
@@ -85,6 +94,7 @@ const changePassword = (request, response) => {
   req.body.pass2 = `${req.body.pass2}`;
   req.body.passOld = `${req.body.passOld}`;
 
+  //error checking
   if (!req.body.passOld || !req.body.pass || !req.body.pass2) {
     return res.status(400).json({ error: 'All fields are required' });
   }
@@ -93,16 +103,19 @@ const changePassword = (request, response) => {
     return res.status(400).json({ error: 'Passwords do not match' });
   }
 
+  //authenticate
   return Account.AccountModel.authenticate(req.body.username, req.body.passOld, (err, account) => {
     if (err || !account) {
       return res.status(401).json({ error: 'Check your old password!' });
     }
+    //encrypt
     Account.AccountModel.generateHash(req.body.pass, (salt, hash) => {
       const newPassData = {
         salt,
         password: hash,
       };
 
+      //update
       Account.AccountModel.updateByUsername(req.body.username, newPassData, (err1, docs) => {
         if (err1) {
           console.log(err1);
@@ -120,6 +133,7 @@ const changePassword = (request, response) => {
   });
 };
 
+//csrf
 const getToken = (request, response) => {
   const req = request;
   const res = response;

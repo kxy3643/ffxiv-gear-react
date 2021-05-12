@@ -2,6 +2,7 @@ import React from 'react';
 import $ from "jquery";
 import MyModal from "./modal"
 
+//ajax helper
 const sendAjax = (type, action, data, success, setModal) => {
   $.ajax({
     cache: false,
@@ -17,6 +18,7 @@ const sendAjax = (type, action, data, success, setModal) => {
   });
 };
 
+//team maker helper
 const handleMakeTeam = (e, props, setModal, getMyTeams) => {
   e.preventDefault();
   
@@ -38,6 +40,7 @@ const handleMakeTeam = (e, props, setModal, getMyTeams) => {
   return false;
 }
 
+//team delete helper
 const handleDeleteTeam = (e, props, setModal, getMyTeams, index) => {
   e.preventDefault();
   
@@ -98,7 +101,7 @@ const dpsSelect = (id) => {
     );
 }
       
-      
+//component
 function TeamPage(props) {
   const [modal, setModal] = React.useState(null);
   
@@ -113,7 +116,7 @@ function TeamPage(props) {
     .catch(error => console.log(error));
   };
   
-  
+  //render maker
   const renderMaker = (props) => {
     return (
       <div id="teamMaker">
@@ -151,7 +154,8 @@ function TeamPage(props) {
       </div>
       );
   };
-    
+  
+  //render team list
   const renderMyTeams = (props) => {
     return (
       <div id="myTeams">
@@ -190,7 +194,7 @@ function TeamPage(props) {
       </div>
     );    
   }
-          
+  //auto update after changes in component  
   React.useEffect(() => {
     getMyTeams();
     if(props.loggedIn){
@@ -209,12 +213,12 @@ function TeamPage(props) {
         <hr className="breakHR" />
         </div>
         );
-      }else{
+    }else{
         return (<div className="TeamPage" />);
-      }
+    }
   }, [props.loggedIn ,props.updateStatus]);
             
-            
+  //dafault return  
   if(props.loggedIn){
     return (
       <div className="App" id="TeamPage">
@@ -233,7 +237,7 @@ function TeamPage(props) {
       );
     }else{
       return (<div className="TeamPage" />);
-    }
+  }
     
 }
                   

@@ -87,6 +87,7 @@ TeamSchema.statics.toAPI = (doc) => ({
   d4: doc.d4,
 });
 
+//find by owner id
 TeamSchema.statics.findByOwner = (ownerId) => {
   const search = {
     owner: convertId(ownerId),
@@ -95,6 +96,7 @@ TeamSchema.statics.findByOwner = (ownerId) => {
   return TeamModel.find(search).select('name contact t1 t2 h1 h2 d1 d2 d3 d4').lean();
 };
 
+//find by team name
 TeamSchema.statics.findByName = (name) => {
   const search = {
     name,
@@ -103,6 +105,7 @@ TeamSchema.statics.findByName = (name) => {
   return TeamModel.find(search).select('name owner').lean();
 };
 
+//update by team name
 TeamSchema.statics.updateByName = (name, newValues, callback) => {
   const search = {
     name,
@@ -111,6 +114,7 @@ TeamSchema.statics.updateByName = (name, newValues, callback) => {
   return TeamModel.updateOne(search, newValues, callback);
 };
 
+//delete by team name
 TeamSchema.statics.deleteByName = (name) => {
   const search = {
     name,
@@ -119,6 +123,7 @@ TeamSchema.statics.deleteByName = (name) => {
   return TeamModel.deleteOne(search);
 };
 
+//admin find all
 TeamSchema.statics.findAll = () => TeamModel.find().select('name contact t1 t2 h1 h2 d1 d2 d3 d4').lean();
 
 TeamModel = mongoose.model('Team', TeamSchema);
