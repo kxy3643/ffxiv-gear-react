@@ -92,8 +92,7 @@ TeamSchema.statics.findByOwner = (ownerId) => {
     owner: convertId(ownerId),
   };
 
-  return TeamModel.find(search).select('name contact t1 t2 h1 h2 d1 d2 d3 d4'
-  ).lean();
+  return TeamModel.find(search).select('name contact t1 t2 h1 h2 d1 d2 d3 d4').lean();
 };
 
 TeamSchema.statics.findByName = (name) => {
@@ -118,13 +117,9 @@ TeamSchema.statics.deleteByName = (name) => {
   };
 
   return TeamModel.deleteOne(search);
-}
-
-TeamSchema.statics.findAll = () => {
-
-  return TeamModel.find().select('name contact t1 t2 h1 h2 d1 d2 d3 d4'
-  ).lean();
 };
+
+TeamSchema.statics.findAll = () => TeamModel.find().select('name contact t1 t2 h1 h2 d1 d2 d3 d4').lean();
 
 TeamModel = mongoose.model('Team', TeamSchema);
 

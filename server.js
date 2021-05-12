@@ -100,6 +100,9 @@ app.post('/makeTeam', mid.requiresSecure, controllers.Team.addTeam);
 app.get('/getMyTeams', mid.requiresSecure, controllers.Team.getTeam);
 app.post('/deleteTeam', mid.requiresSecure, controllers.Team.deleteTeam);
 app.get('/getAdmin', mid.requiresSecure, controllers.Team.getAllTeams);
+app.post('/deleteAdmin', mid.requiresSecure, controllers.Team.deleteAdmin);
+app.get('/search', mid.requiresSecure, controllers.Team.search);
+app.post('/change', mid.requiresSecure, controllers.Account.changePassword);
 
 
 app.get('/', (req, res) => {

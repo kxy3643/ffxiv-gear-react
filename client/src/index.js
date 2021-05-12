@@ -31,7 +31,7 @@ const Index = (props) => {
         adminStatus ? (
           //If logged in && admin
           <>
-            <Admin csrf={props.csrf} loggedIn = {true}/>
+            <Admin csrf={props.csrf} updateStatus={updateStatus} onUpdate={setUpdateStatus} loggedIn = {true}/>
             <Team csrf={props.csrf} updateStatus={updateStatus} onUpdate={setUpdateStatus} loggedIn = {true}/>
           </>
           ) : (
@@ -65,41 +65,3 @@ $(document).ready(function() {
   
   
 });
-
-
-
-
-/*
-const setup = (csrf) => {
-  const [loginStatus, setLoginStatus] = React.useState(false);
-
-  
-  const topNavLogin = (csrf) => {
-    if(loginStatus === true){
-      return <TeamPage csrf={csrf} loggedIn = {true}/>
-    }else{
-      return <TeamPage csrf={csrf} loggedIn = {false}/>
-    }
-  }
-
-  ReactDOM.render(
-    <React.StrictMode>
-      <TopNav csrf={csrf} onLogin={setLoginStatus}/>
-      {topNavLogin(csrf)}
-      <App />
-    </React.StrictMode>,
-    document.getElementById('root')
-  );
-}
-
-const getToken = () => {
-  sendAjax('GET', '/getToken', null, (result) => {
-      setup(result.csrfToken);
-  });
-};
-
-$(document).ready(function() {
-  getToken();
-});
-
-*/

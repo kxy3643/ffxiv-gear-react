@@ -76,6 +76,50 @@ const signup = (request, response) => {
   });
 };
 
+const changePassword = (request, response) => {
+  const req = request;
+  const res = response;
+
+  req.body.username = `${req.body.username}`;
+  req.body.pass = `${req.body.pass}`;
+  req.body.pass2 = `${req.body.pass2}`;
+  req.body.passOld = `${req.body.passOld}`;
+
+  if (!req.body.passOld || !req.body.pass || !req.body.pass2) {
+    return res.status(400).json({ error: 'All fields are required' });
+  }
+
+  if (req.body.pass !== req.body.pass2) {
+    return res.status(400).json({ error: 'Passwords do not match' });
+  }
+
+  return Account.AccountModel.authenticate(req.body.username, req.body.passOld, (err, account) => {
+    if (err || !account) {
+      return res.status(401).json({ error: 'Check your old password!' });
+    }
+    Account.AccountModel.generateHash(req.body.pass, (salt, hash) => {
+      const newPassData = {
+        salt,
+        password: hash,
+      };
+
+      Account.AccountModel.updateByUsername(req.body.username, newPassData, (err1, docs) => {
+        if (err1) {
+          console.log(err1);
+          return res.status(400).json({ error: 'An error occurred' });
+        }
+
+        if (docs.nModified !== 0) {
+          return res.status(200).json({ message: 'Password Changed' });
+        }
+
+        return true;
+      });
+    });
+    return true;
+  });
+};
+
 const getToken = (request, response) => {
   const req = request;
   const res = response;
@@ -91,3 +135,4 @@ module.exports.login = login;
 module.exports.logout = logout;
 module.exports.signup = signup;
 module.exports.getToken = getToken;
+module.exports.changePassword = changePassword;
